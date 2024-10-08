@@ -8,6 +8,8 @@ import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import { Layout } from "antd";
+import CreateGroup from "./components/modals/CreateGroup.modal";
+import JoinGroupModal from "./components/modals/JoinGroupModal";
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
           </Routes>
+          <CreateGroup />
+          <JoinGroupModal />
         </Layout>
       </ProtectedRoutes>
     </ClerkProvider>
