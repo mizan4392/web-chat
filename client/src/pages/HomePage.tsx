@@ -1,8 +1,8 @@
-import { useAuth, UserButton, useSession } from "@clerk/clerk-react";
+import { UserButton, useSession } from "@clerk/clerk-react";
 import { Button, Layout, Menu, theme } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AimOutlined,
   MenuFoldOutlined,
@@ -11,15 +11,32 @@ import {
 } from "@ant-design/icons";
 
 import { useModal } from "../hooks/useModal";
+import { User } from "../store/types";
+import { createUser } from "../http/user.http";
+import { useGeneralStore } from "../store/general.store";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false);
+  const { setUser } = useGeneralStore();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const { session } = useSession();
 
-  const { isSignedIn } = useAuth();
+  console.log(session?.user);
+
+  useEffect(() => {
+    if (!session?.user) {
+      return;
+    }
+    createUser()
+      .then((data) => {
+        setUser(data as User);
+      })
+      .catch((error) => {
+        console.error("error", error);
+      });
+  }, [session]);
   const createGroupModal = useModal("CreateGroup");
   const joinGroupModal = useModal("JoinGroup");
   return (
