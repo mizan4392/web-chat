@@ -7,6 +7,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { useModal } from "../hooks/useModal";
+import { MemberRole } from "../store/types";
 
 type GroupHeaderProps = {
   name?: string;
@@ -15,12 +16,19 @@ type GroupHeaderProps = {
 export default function GroupHeader({ name, role }: GroupHeaderProps) {
   const inviteModal = useModal("InviteToGroup");
   const updateModal = useModal("UpdateGroup");
+  console.log("role", role);
   const items: MenuProps["items"] = [
     {
       key: "1",
       label: "Invite People",
       icon: <PlusCircleOutlined />,
       onClick: () => inviteModal.openModal(),
+      disabled:
+        role === MemberRole.ADMIN
+          ? false
+          : role === MemberRole.MODERATOR
+          ? false
+          : true,
     },
 
     {
@@ -28,6 +36,12 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
       label: "Update Group",
       icon: <SettingOutlined />,
       onClick: () => updateModal.openModal(),
+      disabled:
+        role === MemberRole.ADMIN
+          ? false
+          : role === MemberRole.MODERATOR
+          ? false
+          : true,
     },
     {
       type: "divider",
@@ -36,6 +50,7 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
       key: "3",
       label: "Delete Group",
       icon: <DeleteOutlined />,
+      disabled: role === MemberRole.ADMIN ? false : true,
     },
     {
       key: "4",

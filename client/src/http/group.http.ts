@@ -1,4 +1,4 @@
-import { API_URL, httpGet, httpPostFile, httpUpdate } from "./http";
+import { API_URL, httpGet, httpPost, httpPostFile, httpUpdate } from "./http";
 
 export const createGroup = async (data: FormData) => {
   const response = await httpPostFile(`${API_URL}/group/create`, data);
@@ -18,6 +18,13 @@ export const getGroupDetails = async (groupId: string) => {
 export const generateNewGroupKey = async (groupId: number) => {
   const response = await httpUpdate(`${API_URL}/group/generate-key`, {
     groupId: groupId,
+  });
+  return response;
+};
+
+export const joinGroup = async (inviteCode: string) => {
+  const response = await httpPost(`${API_URL}/group/join`, {
+    inviteCode,
   });
   return response;
 };

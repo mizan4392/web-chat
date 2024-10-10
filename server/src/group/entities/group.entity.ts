@@ -32,6 +32,7 @@ export class Group {
   @Column({ type: 'text', nullable: true })
   updatedAt: string;
 
-  @ManyToMany(() => GroupMember, (user) => user.group)
+  @ManyToMany(() => GroupMember, (member) => member.group)
+  @JoinTable()
   members?: GroupMember[];
 }

@@ -12,7 +12,7 @@ export class GroupMember {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Group)
+  @ManyToOne(() => Group, (group) => group.members)
   group: Group;
 
   @Column()

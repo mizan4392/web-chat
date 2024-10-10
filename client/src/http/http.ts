@@ -78,7 +78,7 @@ export async function httpUpdate(
 
 async function handleResponse(response: Response): Promise<any> {
   if (!response.ok) {
-    const error = await response.text();
+    const error = await response.json();
     throw new Error(error);
   }
   return response.json();

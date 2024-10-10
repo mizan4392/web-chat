@@ -46,11 +46,20 @@ export class GroupService {
     if (!userExist) {
       throw new BadRequestException('User not found');
     }
-    return this.groupRepository.find({
-      where: {
-        owner: userExist,
-      },
-    });
+    const userGroup =
+      (await this.groupRepository.find({
+        where: {
+          owner: userExist,
+        },
+      })) || [];
+
+    const joinedGroups = await this.groupMembersService.getGroupsByUser(
+      userExist.id,
+    );
+    const joinGroups = joinedGroups.map((group) => group.group) || [];
+    console.log('joinedGroups', joinedGroups);
+
+    return userGroup.concat(joinGroups);
   }
 
   findAll() {
@@ -106,6 +115,25 @@ export class GroupService {
       console.log(e);
       throw new BadRequestException(e.message);
     }
+  }
+
+  async joinGroup(inviteCode: string, email: string) {
+    const userProm = this.userService.findUserByEmail(email);
+    const groupProm = this.groupRepository.findOne({
+      where: {
+        inviteCode: inviteCode,
+      },
+    });
+
+    const [user, group] = await Promise.all([userProm, groupProm]);
+    console.log('user', user);
+    console.log('group', group);
+    if (!group) {
+      throw new BadRequestException(
+        'Group not found.Contact group owner for new Invitation code',
+      );
+    }
+    return this.groupMembersService.addMember(group?.id, user?.id);
   }
 
   update(id: number, updateGroupDto: UpdateGroupDto) {

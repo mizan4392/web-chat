@@ -35,14 +35,25 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (user) {
-      getUserGroups().then((data) => {
-        setUserGroups(data);
-      });
+      getUserGroups()
+        .then((data) => {
+          console.log("data----------", data);
+          if (data?.length) {
+            setUserGroups(data);
+          } else {
+            setUserGroups([]);
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+          setUserGroups([]);
+        });
     }
   }, [user]);
 
   const createGroupModal = useModal("CreateGroup");
   const joinGroupModal = useModal("JoinGroup");
+  console.log("---------s", userGroups);
   return (
     <Layout>
       <Sider trigger={null} collapsed={true} collapsible>
@@ -81,7 +92,7 @@ export default function RootLayout() {
                 gap: "1rem",
               }}
             >
-              {userGroups.map((group) => (
+              {userGroups?.map((group) => (
                 <Tooltip title={group.name} key={group.id} placement="right">
                   <Link
                     to={`groups/${group.id}`}

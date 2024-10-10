@@ -5,6 +5,7 @@ import {
   SafetyCertificateOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useGeneralStore } from "../store/general.store";
 
 type ChatMembersProps = {
   members?: GroupMember[];
@@ -26,6 +27,7 @@ export default function ChatMembers({ members }: ChatMembersProps) {
 }
 
 const MemberCard = ({ member }: { member: GroupMember }) => {
+  const { user } = useGeneralStore();
   return (
     <Card
       className="w-full"
@@ -39,9 +41,13 @@ const MemberCard = ({ member }: { member: GroupMember }) => {
         <Typography.Text>{member.user.name}</Typography.Text>
         <div className="flex gap-4">
           {member.role === "admin" ? (
-            <SafetyCertificateOutlined className="text-green-400" />
+            <SafetyCertificateOutlined className="text-green-500" />
           ) : (
-            <UserOutlined />
+            <UserOutlined
+              className={`${
+                user?.id === member?.userId ? "text-green-500" : ""
+              }`}
+            />
           )}
           {member.role !== "admin" && (
             <MoreOutlined className="cursor-pointer" />

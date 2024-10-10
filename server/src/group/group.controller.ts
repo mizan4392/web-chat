@@ -42,6 +42,13 @@ export class GroupController {
     console.log(imageUrl);
     return this.groupService.create({ ...createGroupDto, imageUrl }, user);
   }
+  @Post('join')
+  async joinGroup(
+    @Body('inviteCode') inviteCode: string,
+    @CurrentUser() user: User,
+  ) {
+    return this.groupService.joinGroup(inviteCode, user.email);
+  }
 
   @Get('user-groups')
   async getUserGroups(@CurrentUser() user: User) {
