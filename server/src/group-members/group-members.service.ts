@@ -14,6 +14,14 @@ export class GroupMembersService {
   create(createGroupMemberDto: CreateGroupMemberDto) {
     return this.groupMemberRepository.save(createGroupMemberDto);
   }
+  getGroupMembers(groupId: number) {
+    return this.groupMemberRepository.find({
+      where: {
+        groupId,
+      },
+      relations: ['user'],
+    });
+  }
 
   findAll() {
     return `This action returns all groupMembers`;

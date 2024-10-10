@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -53,8 +54,19 @@ export class GroupController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.groupService.findOne(+id);
+  findOne(@Param('id') groupId: string) {
+    if (!groupId.trim()) {
+      throw new BadRequestException('Group id is required');
+    }
+    return this.groupService.findOne(+groupId);
+  }
+
+  @Patch('generate-key')
+  generateInviteKey(
+    @CurrentUser() user: User,
+    @Body('groupId') groupId: number,
+  ) {
+    return this.groupService.generateInviteKey(user.email, groupId);
   }
 
   @Patch(':id')

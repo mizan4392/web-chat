@@ -65,7 +65,7 @@ export async function httpUpdate(
   headers: HeadersInit = {}
 ): Promise<any> {
   const response = await fetch(url, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       ...headers,

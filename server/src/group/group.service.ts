@@ -57,8 +57,55 @@ export class GroupService {
     return `This action returns all group`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  async findOne(id: number) {
+    const group = await this.groupRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['owner'],
+    });
+
+    const members = await this.groupMembersService.getGroupMembers(id);
+    return {
+      ...group,
+      members,
+    };
+  }
+
+  async generateInviteKey(email: string, groupId: number) {
+    console.log('type', typeof groupId);
+    const userProm = this.userService.findUserByEmail(email);
+    const groupProm = this.groupRepository.findOne({
+      where: {
+        id: groupId,
+      },
+      relations: ['owner'],
+    });
+    const [user, group] = await Promise.all([userProm, groupProm]);
+    if (!user || !group) {
+      throw new BadRequestException('User or Group not found');
+    }
+    if (user.id !== group.owner.id) {
+      throw new BadRequestException('Only the group owner can generate key');
+    }
+    const inviteCode = uuidv4();
+
+    try {
+      const updated = await this.groupRepository.update(
+        {
+          id: groupId,
+        },
+        {
+          inviteCode,
+        },
+      );
+      if (updated.affected !== 0) {
+        return this.findOne(groupId);
+      }
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestException(e.message);
+    }
   }
 
   update(id: number, updateGroupDto: UpdateGroupDto) {

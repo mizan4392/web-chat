@@ -1,6 +1,6 @@
 import { Group } from 'src/group/entities/group.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export const Member_Role = {
   ADMIN: 'admin',
@@ -12,10 +12,7 @@ export class GroupMember {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => User)
-  user: User;
-
-  @ManyToMany(() => Group)
+  @ManyToOne(() => Group)
   group: Group;
 
   @Column()
@@ -26,4 +23,7 @@ export class GroupMember {
 
   @Column({ type: 'enum', enum: Member_Role, default: Member_Role.MEMBER })
   role: string;
+
+  @ManyToOne(() => User, (user) => user.groupMembers) // Assuming you have a User entity
+  user: User;
 }

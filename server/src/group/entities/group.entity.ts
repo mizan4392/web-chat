@@ -3,6 +3,7 @@ import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -31,8 +32,6 @@ export class Group {
   @Column({ type: 'text', nullable: true })
   updatedAt: string;
 
-  @ManyToMany(() => GroupMember, (members) => members.user, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToMany(() => GroupMember, (user) => user.group)
   members?: GroupMember[];
 }

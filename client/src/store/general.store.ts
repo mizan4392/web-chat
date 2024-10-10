@@ -19,6 +19,9 @@ interface GeneralStore {
 
   userGroups: Group[] | [];
   setUserGroups: (groups: Group[]) => void;
+
+  selectedGroup: Group | undefined;
+  setSelectedGroup: (group: Group | undefined) => void;
 }
 
 export const useGeneralStore = create<GeneralStore>()(
@@ -30,6 +33,8 @@ export const useGeneralStore = create<GeneralStore>()(
       setUser: (user: User | null) => set({ user }),
       userGroups: [],
       setUserGroups: (userGroups) => set({ userGroups }),
+      selectedGroup: undefined,
+      setSelectedGroup: (group) => set({ selectedGroup: group }),
     }),
 
     {

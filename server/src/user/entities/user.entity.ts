@@ -1,5 +1,12 @@
+import { GroupMember } from 'src/group-members/entities/group-member.entity';
 import { Group } from 'src/group/entities/group.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -17,4 +24,7 @@ export class User {
 
   @OneToMany(() => Group, (group) => group.owner, { onDelete: 'CASCADE' })
   groups: Group[];
+
+  @ManyToOne(() => GroupMember, (group) => group.user)
+  groupMembers: GroupMember[];
 }

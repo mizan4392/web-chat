@@ -11,6 +11,7 @@ import { Layout } from "antd";
 import CreateGroup from "./components/modals/CreateGroup.modal";
 import JoinGroupModal from "./components/modals/JoinGroupModal";
 import RootLayout from "./layout/RootLayout";
+import InvitePeopleModal from "./components/modals/InvitePeople.modal";
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -36,6 +37,7 @@ function App() {
           <RootLayout />
           <CreateGroup />
           <JoinGroupModal />
+          <InvitePeopleModal />
         </Layout>
       </ProtectedRoutes>
     </ClerkProvider>

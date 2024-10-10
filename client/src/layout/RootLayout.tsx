@@ -1,14 +1,9 @@
 import { RedirectToSignIn, UserButton, useSession } from "@clerk/clerk-react";
-import { Button, Layout, Menu, theme, Tooltip } from "antd";
+import { Layout, Menu, theme, Tooltip } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import { useEffect, useState } from "react";
-import {
-  AimOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { useEffect } from "react";
+import { AimOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { useModal } from "../hooks/useModal";
 import { User } from "../store/types";
@@ -16,9 +11,9 @@ import { createUser } from "../http/user.http";
 import { useGeneralStore } from "../store/general.store";
 import { getUserGroups } from "../http/group.http";
 import { Link, Route, Routes } from "react-router-dom";
+import ChatLayOut from "./ChatLayOut";
 
 export default function RootLayout() {
-  const [collapsed, setCollapsed] = useState(false);
   const { user, setUser, userGroups, setUserGroups } = useGeneralStore();
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -41,7 +36,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (user) {
       getUserGroups().then((data) => {
-        console.log(data);
         setUserGroups(data);
       });
     }
@@ -112,17 +106,11 @@ export default function RootLayout() {
       </Sider>
 
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
+        <Header
+          style={{ padding: 0, background: colorBgContainer }}
+          className="flex justify-center items-center"
+        >
+          WebChat
         </Header>
         <Content
           style={{
@@ -134,7 +122,7 @@ export default function RootLayout() {
           }}
         >
           <Routes>
-            <Route path="groups/:groupId" element={<div>Chat</div>} />
+            <Route path="groups/:groupId" element={<ChatLayOut />} />
           </Routes>
         </Content>
       </Layout>
