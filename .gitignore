@@ -10,7 +10,7 @@ server/postgres-data
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-
+server/public
 # testing
 /coverage
 

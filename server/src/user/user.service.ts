@@ -28,6 +28,14 @@ export class UserService {
     return `This action returns all user`;
   }
 
+  findUserByEmail(email: string) {
+    return this.userRepo.findOne({
+      where: {
+        email,
+      },
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }

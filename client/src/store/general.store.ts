@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { User } from "./types";
+import { Group, User } from "./types";
 
 export type ModalType =
   | "CreateGroup"
@@ -16,6 +16,9 @@ interface GeneralStore {
 
   user: User | null;
   setUser: (User: User | null) => void;
+
+  userGroups: Group[] | [];
+  setUserGroups: (groups: Group[]) => void;
 }
 
 export const useGeneralStore = create<GeneralStore>()(
@@ -25,6 +28,8 @@ export const useGeneralStore = create<GeneralStore>()(
       setActiveModal: (modal) => set({ activeModal: modal }),
       user: null,
       setUser: (user: User | null) => set({ user }),
+      userGroups: [],
+      setUserGroups: (userGroups) => set({ userGroups }),
     }),
 
     {

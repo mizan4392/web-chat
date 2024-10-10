@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Group } from 'src/group/entities/group.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -13,4 +14,7 @@ export class User {
 
   @Column({ type: 'text', nullable: true })
   imageUrl?: string;
+
+  @OneToMany(() => Group, (group) => group.owner, { onDelete: 'CASCADE' })
+  groups: Group[];
 }

@@ -5,11 +5,12 @@ import {
   SignedOut,
 } from "@clerk/clerk-react";
 import "./App.css";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import { useNavigate } from "react-router-dom";
+
 import { Layout } from "antd";
 import CreateGroup from "./components/modals/CreateGroup.modal";
 import JoinGroupModal from "./components/modals/JoinGroupModal";
+import RootLayout from "./layout/RootLayout";
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -32,9 +33,7 @@ function App() {
     >
       <ProtectedRoutes>
         <Layout className="w-full h-full">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-          </Routes>
+          <RootLayout />
           <CreateGroup />
           <JoinGroupModal />
         </Layout>

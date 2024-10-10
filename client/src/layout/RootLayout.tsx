@@ -1,5 +1,5 @@
 import { RedirectToSignIn, UserButton, useSession } from "@clerk/clerk-react";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, theme, Tooltip } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useEffect, useState } from "react";
@@ -15,9 +15,9 @@ import { User } from "../store/types";
 import { createUser } from "../http/user.http";
 import { useGeneralStore } from "../store/general.store";
 import { getUserGroups } from "../http/group.http";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 
-export default function HomePage() {
+export default function RootLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const { user, setUser, userGroups, setUserGroups } = useGeneralStore();
   const {
@@ -54,7 +54,10 @@ export default function HomePage() {
       <Sider trigger={null} collapsed={true} collapsible>
         <div className="h-full flex flex-col justify-between">
           <div className="demo-logo-vertical p-2">
-            <img src="./brand.png" className="bg-white rounded-xl p-2" />
+            <img
+              src="../public/brand.png"
+              className="bg-white rounded-xl p-2"
+            />
           </div>
           <div className="flex-1">
             <Menu theme="dark" mode="inline">
@@ -80,19 +83,24 @@ export default function HomePage() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
               {userGroups.map((group) => (
-                <Link
-                  to={`groups/${group.id}`}
-                  key={group.id}
-                  className=" cursor-pointer"
-                >
-                  <img
-                    src={group.imageUrl}
-                    className="rounded-full w-12 h-12"
-                  />
-                </Link>
+                <Tooltip title={group.name} key={group.id} placement="right">
+                  <Link
+                    to={`groups/${group.id}`}
+                    key={group.id}
+                    className=" cursor-pointer"
+                  >
+                    <img
+                      src={group.imageUrl}
+                      className="rounded-full w-12 h-12"
+                    />
+                  </Link>
+                  /
+                </Tooltip>
               ))}
             </div>
           </div>
@@ -102,19 +110,6 @@ export default function HomePage() {
           </div>
         </div>
       </Sider>
-      {/* {collapsed ? null : (
-        <Sider className="" trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
-          <Menu theme="dark" mode="inline">
-            <Menu.Item key="1" icon={<UserOutlined />}>
-              nav 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              nav 2
-            </Menu.Item>
-          </Menu>
-        </Sider>
-      )} */}
 
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -137,7 +132,11 @@ export default function HomePage() {
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}
-        ></Content>
+        >
+          <Routes>
+            <Route path="groups/:groupId" element={<div>Chat</div>} />
+          </Routes>
+        </Content>
       </Layout>
     </Layout>
   );

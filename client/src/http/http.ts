@@ -20,6 +20,7 @@ export async function httpGet(
     headers: {
       "Content-Type": "application/json",
       ...headers,
+      Authorization: `Bearer ${getSessionToken()}`,
     },
   });
   return handleResponse(response);
@@ -35,6 +36,7 @@ export async function httpPost(
     headers: {
       "Content-Type": "application/json",
       ...headers,
+      Authorization: `Bearer ${getSessionToken()}`,
     },
     body: JSON.stringify(body),
   });
@@ -43,18 +45,16 @@ export async function httpPost(
 
 export async function httpPostFile(
   url: string,
-  file: File,
+  data: FormData,
   headers: HeadersInit = {}
 ): Promise<any> {
-  const formData = new FormData();
-  formData.append("file", file);
-
   const response = await fetch(url, {
     method: "POST",
     headers: {
       ...headers,
+      Authorization: `Bearer ${getSessionToken()}`,
     },
-    body: formData,
+    body: data,
   });
   return handleResponse(response);
 }
@@ -69,6 +69,7 @@ export async function httpUpdate(
     headers: {
       "Content-Type": "application/json",
       ...headers,
+      Authorization: `Bearer ${getSessionToken()}`,
     },
     body: JSON.stringify(body),
   });
