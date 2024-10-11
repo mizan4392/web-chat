@@ -76,6 +76,21 @@ export async function httpUpdate(
   return handleResponse(response);
 }
 
+export async function httpDelete(
+  url: string,
+  headers: HeadersInit = {}
+): Promise<any> {
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+      Authorization: `Bearer ${getSessionToken()}`,
+    },
+  });
+  return handleResponse(response);
+}
+
 async function handleResponse(response: Response): Promise<any> {
   if (!response.ok) {
     const error = await response.json();

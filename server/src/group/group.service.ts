@@ -161,7 +161,19 @@ export class GroupService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: number, currentUser: User) {
+    console.log('currentUser', currentUser);
+    console.log('id', id);
+    const userExist = await this.userService.findUserByEmail(currentUser.email);
+    const group = await this.groupRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['owner'],
+    });
+    if (group?.owner?.id !== userExist.id) {
+      throw new BadRequestException('Only the group owner can delete group');
+    }
+    return this.groupRepository.delete({ id });
   }
 }

@@ -1,6 +1,7 @@
-import { Dropdown, MenuProps, Typography } from "antd";
+import { Dropdown, MenuProps, Modal, notification, Typography } from "antd";
 import {
   DeleteOutlined,
+  ExclamationCircleOutlined,
   MoreOutlined,
   PlusCircleOutlined,
   PoweroffOutlined,
@@ -8,14 +9,44 @@ import {
 } from "@ant-design/icons";
 import { useModal } from "../hooks/useModal";
 import { MemberRole } from "../store/types";
+import { deleteGroup, getUserGroups } from "../http/group.http";
+import { useGeneralStore } from "../store/general.store";
 
 type GroupHeaderProps = {
   name?: string;
   role?: string;
 };
 export default function GroupHeader({ name, role }: GroupHeaderProps) {
+  const [modal, contextHolder] = Modal.useModal();
+  const { selectedGroup, setUserGroups } = useGeneralStore();
   const inviteModal = useModal("InviteToGroup");
   const updateModal = useModal("UpdateGroup");
+
+  const confirm = () => {
+    modal.confirm({
+      title: "Do you want to delete this group?",
+      icon: <ExclamationCircleOutlined />,
+      okText: "Delete",
+      cancelText: "Close",
+      onOk: () => {
+        deleteGroup(Number(selectedGroup?.id))
+          .then(() => {
+            notification.success({
+              message: "Group Deleted",
+            });
+            getUserGroups().then((data) => {
+              setUserGroups(data);
+            });
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error",
+              description: err.message,
+            });
+          });
+      },
+    });
+  };
 
   const items: MenuProps["items"] = [
     {
@@ -51,6 +82,7 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
       label: "Delete Group",
       icon: <DeleteOutlined />,
       disabled: role === MemberRole.ADMIN ? false : true,
+      onClick: confirm,
     },
     {
       key: "4",
@@ -61,6 +93,7 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
   ];
   return (
     <div className="flex justify-between w-full">
+      {contextHolder}
       <div className="ml-5">
         <Typography.Title level={3}>{name}</Typography.Title>
       </div>

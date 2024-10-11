@@ -1,4 +1,11 @@
-import { API_URL, httpGet, httpPost, httpPostFile, httpUpdate } from "./http";
+import {
+  API_URL,
+  httpDelete,
+  httpGet,
+  httpPost,
+  httpPostFile,
+  httpUpdate,
+} from "./http";
 
 export const createGroup = async (data: FormData) => {
   const response = await httpPostFile(`${API_URL}/group/create`, data);
@@ -31,5 +38,10 @@ export const joinGroup = async (inviteCode: string) => {
 
 export const updateGroup = async (data: FormData) => {
   const response = await httpPostFile(`${API_URL}/group/update`, data);
+  return response;
+};
+
+export const deleteGroup = async (groupId: number) => {
+  const response = await httpDelete(`${API_URL}/group/${groupId}`);
   return response;
 };
