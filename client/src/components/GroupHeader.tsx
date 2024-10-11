@@ -16,7 +16,7 @@ type GroupHeaderProps = {
 export default function GroupHeader({ name, role }: GroupHeaderProps) {
   const inviteModal = useModal("InviteToGroup");
   const updateModal = useModal("UpdateGroup");
-  console.log("role", role);
+
   const items: MenuProps["items"] = [
     {
       key: "1",

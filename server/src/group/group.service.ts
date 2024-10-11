@@ -36,7 +36,6 @@ export class GroupService {
       });
       return group;
     } catch (e) {
-      console.log(e);
       throw new BadRequestException(e.message);
     }
   }
@@ -57,7 +56,6 @@ export class GroupService {
       userExist.id,
     );
     const joinGroups = joinedGroups.map((group) => group.group) || [];
-    console.log('joinedGroups', joinedGroups);
 
     return userGroup.concat(joinGroups);
   }
@@ -82,7 +80,6 @@ export class GroupService {
   }
 
   async generateInviteKey(email: string, groupId: number) {
-    console.log('type', typeof groupId);
     const userProm = this.userService.findUserByEmail(email);
     const groupProm = this.groupRepository.findOne({
       where: {
@@ -108,11 +105,10 @@ export class GroupService {
           inviteCode,
         },
       );
-      if (updated.affected !== 0) {
+      if (updated.affected) {
         return this.findOne(groupId);
       }
     } catch (e) {
-      console.log(e);
       throw new BadRequestException(e.message);
     }
   }
@@ -126,8 +122,7 @@ export class GroupService {
     });
 
     const [user, group] = await Promise.all([userProm, groupProm]);
-    console.log('user', user);
-    console.log('group', group);
+
     if (!group) {
       throw new BadRequestException(
         'Group not found.Contact group owner for new Invitation code',
@@ -136,8 +131,34 @@ export class GroupService {
     return this.groupMembersService.addMember(group?.id, user?.id);
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  async update(updateGroupDto: UpdateGroupDto, user: User) {
+    updateGroupDto.groupId = +updateGroupDto.groupId;
+    const userExist = await this.userService.findUserByEmail(user.email);
+    const group = await this.groupRepository.findOne({
+      where: {
+        id: updateGroupDto.groupId,
+      },
+      relations: ['owner'],
+    });
+
+    if (group?.owner?.id !== userExist.id) {
+      throw new BadRequestException('Only the group owner can update group');
+    }
+    delete updateGroupDto.groupId;
+    const update = await this.groupRepository.update(
+      {
+        id: group.id,
+      },
+      {
+        ...updateGroupDto,
+      },
+    );
+
+    if (update?.affected) {
+      return this.findOne(group.id);
+    } else {
+      throw new BadRequestException('Group not found');
+    }
   }
 
   remove(id: number) {

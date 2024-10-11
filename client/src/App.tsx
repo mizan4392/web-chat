@@ -12,6 +12,7 @@ import CreateGroup from "./components/modals/CreateGroup.modal";
 import JoinGroupModal from "./components/modals/JoinGroupModal";
 import RootLayout from "./layout/RootLayout";
 import InvitePeopleModal from "./components/modals/InvitePeople.modal";
+import UpdateGroupModal from "./components/modals/UpdateGroupModal";
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Layout className="w-full h-full">
           <RootLayout />
           <CreateGroup />
+          <UpdateGroupModal />
           <JoinGroupModal />
           <InvitePeopleModal />
         </Layout>

@@ -35,11 +35,14 @@ export class GroupController {
     @UploadedFile() file: any,
     @CurrentUser() user: User,
   ) {
-    const imageUrl = await this.globalService.storeImageAndGetUrl(
-      file,
-      DEFAULT_GROUP_IMAGE_URL,
-    );
-    console.log(imageUrl);
+    let imageUrl = '';
+    if (file) {
+      imageUrl = await this.globalService.storeImageAndGetUrl(
+        file,
+        DEFAULT_GROUP_IMAGE_URL,
+      );
+    }
+
     return this.groupService.create({ ...createGroupDto, imageUrl }, user);
   }
   @Post('join')
@@ -76,9 +79,26 @@ export class GroupController {
     return this.groupService.generateInviteKey(user.email, groupId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
-    return this.groupService.update(+id, updateGroupDto);
+  @Post('update')
+  @UseInterceptors(FileInterceptor('file'))
+  async update(
+    @Body() updateGroupDto: UpdateGroupDto,
+    @UploadedFile() file: any,
+    @CurrentUser() user: User,
+  ) {
+    console.log('updateGroupDto', updateGroupDto);
+    let imageUrl = '';
+    if (file) {
+      imageUrl = await this.globalService.storeImageAndGetUrl(
+        file,
+        DEFAULT_GROUP_IMAGE_URL,
+      );
+    }
+    if (imageUrl.trim()) {
+      updateGroupDto.imageUrl = imageUrl;
+    }
+
+    return this.groupService.update(updateGroupDto, user);
   }
 
   @Delete(':id')

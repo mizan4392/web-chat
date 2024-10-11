@@ -37,7 +37,6 @@ export default function RootLayout() {
     if (user) {
       getUserGroups()
         .then((data) => {
-          console.log("data----------", data);
           if (data?.length) {
             setUserGroups(data);
           } else {
@@ -53,7 +52,7 @@ export default function RootLayout() {
 
   const createGroupModal = useModal("CreateGroup");
   const joinGroupModal = useModal("JoinGroup");
-  console.log("---------s", userGroups);
+
   return (
     <Layout>
       <Sider trigger={null} collapsed={true} collapsible>

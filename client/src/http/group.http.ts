@@ -28,3 +28,8 @@ export const joinGroup = async (inviteCode: string) => {
   });
   return response;
 };
+
+export const updateGroup = async (data: FormData) => {
+  const response = await httpPostFile(`${API_URL}/group/update`, data);
+  return response;
+};
