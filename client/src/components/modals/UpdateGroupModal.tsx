@@ -80,7 +80,7 @@ export default function UpdateGroupModal() {
           placeholder="Group Name"
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
-          status={!groupName.trim() ? "error" : undefined}
+          status={!groupName?.trim() ? "error" : undefined}
         />
         <Upload
           name="avatar"

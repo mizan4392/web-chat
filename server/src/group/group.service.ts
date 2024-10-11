@@ -162,8 +162,6 @@ export class GroupService {
   }
 
   async remove(id: number, currentUser: User) {
-    console.log('currentUser', currentUser);
-    console.log('id', id);
     const userExist = await this.userService.findUserByEmail(currentUser.email);
     const group = await this.groupRepository.findOne({
       where: {

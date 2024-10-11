@@ -15,7 +15,7 @@ export default function ChatMembers({ members }: ChatMembersProps) {
     <div>
       <Typography.Text className="ml-5">Members</Typography.Text>
       <Divider />
-      <Row gutter={5}>
+      <Row gutter={[5, 10]}>
         {members?.map((member) => (
           <Col key={member.id} className="w-full">
             <MemberCard key={member.id} member={member} />
