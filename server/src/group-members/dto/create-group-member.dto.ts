@@ -8,3 +8,11 @@ export class CreateGroupMemberDto {
   @IsOptional()
   role: string;
 }
+
+export class PromoteToModeratorDto {
+  @IsNotEmpty()
+  userId: number;
+
+  @IsNotEmpty()
+  groupId: number;
+}

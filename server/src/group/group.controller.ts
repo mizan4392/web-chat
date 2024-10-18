@@ -103,7 +103,6 @@ export class GroupController {
 
   @Delete(':id')
   remove(@Param('id') id: string, @CurrentUser() user: User) {
-    console.log('-------', id);
     return this.groupService.remove(+id, user);
   }
 }

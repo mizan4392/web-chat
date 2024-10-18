@@ -174,4 +174,22 @@ export class GroupService {
     }
     return this.groupRepository.delete({ id });
   }
+
+  getGroupByUserId(userId: number) {
+    return this.groupRepository.findOne({
+      where: {
+        owner: {
+          id: userId,
+        },
+      },
+    });
+  }
+  getGroupByGroupId(groupId: number) {
+    return this.groupRepository.findOne({
+      where: {
+        id: groupId,
+      },
+      relations: ['owner'],
+    });
+  }
 }

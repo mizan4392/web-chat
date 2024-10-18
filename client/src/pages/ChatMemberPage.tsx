@@ -33,11 +33,16 @@ export default function ChatMemberPage() {
         });
     }
   }, [groupId]);
+
   return (
     <div className="">
       <GroupHeader name={selectedGroup?.name} role={currentMember?.role} />
       <Divider />
-      <ChatMembers members={selectedGroup?.members} />
+      <ChatMembers
+        members={selectedGroup?.members}
+        role={currentMember?.role}
+        memberId={currentMember?.id}
+      />
     </div>
   );
 }

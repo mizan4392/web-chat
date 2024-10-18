@@ -45,3 +45,14 @@ export const deleteGroup = async (groupId: number) => {
   const response = await httpDelete(`${API_URL}/group/${groupId}`);
   return response;
 };
+
+export const updateGroupMemberRole = async (
+  groupId: number,
+  userId: number
+) => {
+  const response = await httpPost(`${API_URL}/group-members/promotion`, {
+    groupId,
+    userId,
+  });
+  return response;
+};

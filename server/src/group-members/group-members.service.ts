@@ -1,18 +1,59 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateGroupMemberDto } from './dto/create-group-member.dto';
+import {
+  CreateGroupMemberDto,
+  PromoteToModeratorDto,
+} from './dto/create-group-member.dto';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupMember, Member_Role } from './entities/group-member.entity';
 import { Not, Repository } from 'typeorm';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class GroupMembersService {
   constructor(
     @InjectRepository(GroupMember)
     private groupMemberRepository: Repository<GroupMember>,
+    private userService: UserService,
   ) {}
   create(createGroupMemberDto: CreateGroupMemberDto) {
     return this.groupMemberRepository.save(createGroupMemberDto);
+  }
+  async promoteToModerator(createGroupMemberDto: PromoteToModeratorDto, user) {
+    const currentUser = await this.userService.findUserByEmail(user.email);
+
+    const userGroup = await this.groupMemberRepository.findOne({
+      where: {
+        groupId: createGroupMemberDto.groupId,
+      },
+      relations: ['group'],
+    });
+    if (!userGroup) {
+      throw new BadRequestException('Group not found');
+    }
+    const currentUserGroup = await this.groupMemberRepository.findOne({
+      where: {
+        groupId: createGroupMemberDto.groupId,
+        userId: currentUser.id,
+      },
+    });
+    if (currentUserGroup?.role !== Member_Role.ADMIN) {
+      throw new BadRequestException('Only Admin can promote to moderator');
+    }
+    try {
+      await this.groupMemberRepository.update(
+        {
+          groupId: createGroupMemberDto.groupId,
+          userId: createGroupMemberDto.userId,
+        },
+        {
+          role: Member_Role.MODERATOR,
+        },
+      );
+      return true;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
   getGroupMembers(groupId: number) {
     return this.groupMemberRepository.find({
