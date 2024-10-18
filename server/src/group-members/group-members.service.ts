@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   CreateGroupMemberDto,
+  KickMemberDto,
   PromoteToModeratorDto,
 } from './dto/create-group-member.dto';
 
@@ -55,6 +56,46 @@ export class GroupMembersService {
       throw new BadRequestException(e.message);
     }
   }
+
+  async kickMember(data: KickMemberDto, email: string) {
+    const currentUser = await this.userService.findUserByEmail(email);
+    const userGroup = await this.groupMemberRepository.findOne({
+      where: {
+        groupId: data.groupId,
+      },
+      relations: ['group'],
+    });
+    if (!userGroup) {
+      throw new BadRequestException('Group not found');
+    }
+    const currentUserGroup = await this.groupMemberRepository.findOne({
+      where: {
+        groupId: data.groupId,
+        userId: currentUser.id,
+      },
+    });
+
+    if (
+      currentUserGroup?.role !== Member_Role.ADMIN &&
+      currentUserGroup?.role !== Member_Role.MODERATOR
+    ) {
+      throw new BadRequestException(
+        'Only admin or moderator can kick a member',
+      );
+    }
+    try {
+      await this.groupMemberRepository.delete({
+        groupId: data.groupId,
+        userId: data.userId,
+      });
+
+      //TODO: delete all user message in the group or update the message to show user has been kicked
+      return true;
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestException(e.message);
+    }
+  }
   getGroupMembers(groupId: number) {
     return this.groupMemberRepository.find({
       where: {
@@ -100,5 +141,13 @@ export class GroupMembersService {
 
   remove(id: number) {
     return `This action removes a #${id} groupMember`;
+  }
+  getGroupMemberByUserId(groupId: number, userId: number) {
+    return this.groupMemberRepository.findOne({
+      where: {
+        groupId,
+        userId,
+      },
+    });
   }
 }

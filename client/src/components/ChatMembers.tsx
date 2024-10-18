@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   Col,
@@ -16,7 +17,12 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useGeneralStore } from "../store/general.store";
-import { updateGroupMemberRole } from "../http/group.http";
+import {
+  getGroupDetails,
+  kickGroupMember,
+  updateGroupMemberRole,
+} from "../http/group.http";
+import { useParams } from "react-router-dom";
 
 type ChatMembersProps = {
   members?: GroupMember[];
@@ -57,19 +63,50 @@ const MemberCard = ({
   role?: string;
   memberId?: number;
 }) => {
-  const { user } = useGeneralStore();
-
+  const { user, setSelectedGroup } = useGeneralStore();
+  const { groupId } = useParams();
   const handlePromotion = () => {
     updateGroupMemberRole(member.groupId, member.userId)
       .then(() => {
         notification.success({
           message: "User promoted to moderator",
         });
+        getGroupDetails(groupId || "")
+          .then((data) => {
+            setSelectedGroup(data);
+          })
+          .catch(() => {
+            notification.error({
+              message: "Failed to fetch group details",
+            });
+          });
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((e: any) => {
         notification.error({
           message: "Failed to promote user",
+        });
+      });
+  };
+
+  const kickMember = () => {
+    kickGroupMember(member.groupId, member.userId)
+      .then(() => {
+        notification.success({
+          message: "User kicked out",
+        });
+        getGroupDetails(groupId || "")
+          .then((data) => {
+            setSelectedGroup(data);
+          })
+          .catch(() => {
+            notification.error({
+              message: "Failed to fetch group details",
+            });
+          });
+      })
+      .catch((e: any) => {
+        notification.error({
+          message: e.message,
         });
       });
   };
@@ -84,6 +121,7 @@ const MemberCard = ({
     {
       key: "2",
       label: "Kick out",
+      onClick: kickMember,
     },
   ];
 

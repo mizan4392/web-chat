@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import GroupHeader from "../components/GroupHeader";
 import { GroupMember } from "../store/types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getGroupDetails } from "../http/group.http";
 import { Divider, notification } from "antd";
 import ChatMembers from "../components/ChatMembers";
@@ -11,7 +12,7 @@ export default function ChatMemberPage() {
   const { groupId } = useParams();
   const [currentMember, setCurrentMember] = useState<GroupMember>();
   const { user, selectedGroup, setSelectedGroup } = useGeneralStore();
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (selectedGroup && user) {
       const member = selectedGroup?.members?.find(
@@ -26,10 +27,11 @@ export default function ChatMemberPage() {
         .then((data) => {
           setSelectedGroup(data);
         })
-        .catch(() => {
+        .catch((e: any) => {
           notification.error({
-            message: "Failed to fetch group details",
+            message: e?.message,
           });
+          navigate("/");
         });
     }
   }, [groupId]);

@@ -64,11 +64,11 @@ export class GroupController {
   }
 
   @Get(':id')
-  findOne(@Param('id') groupId: string) {
+  findOne(@Param('id') groupId: string, @CurrentUser() user: User) {
     if (!groupId.trim()) {
       throw new BadRequestException('Group id is required');
     }
-    return this.groupService.findOne(+groupId);
+    return this.groupService.findOne(+groupId, user.email);
   }
 
   @Patch('generate-key')

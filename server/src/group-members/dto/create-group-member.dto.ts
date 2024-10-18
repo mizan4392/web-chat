@@ -16,3 +16,11 @@ export class PromoteToModeratorDto {
   @IsNotEmpty()
   groupId: number;
 }
+
+export class KickMemberDto {
+  @IsNotEmpty()
+  userId: number;
+
+  @IsNotEmpty()
+  groupId: number;
+}

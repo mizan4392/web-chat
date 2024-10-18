@@ -64,7 +64,16 @@ export class GroupService {
     return `This action returns all group`;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, email: string) {
+    const userExist = await this.userService.findUserByEmail(email);
+    const userValid = await this.groupMembersService.getGroupMemberByUserId(
+      id,
+      userExist.id,
+    );
+    console.log('userValid', userValid);
+    if (!userValid) {
+      throw new BadRequestException('User not found in group');
+    }
     const group = await this.groupRepository.findOne({
       where: {
         id,
@@ -106,7 +115,7 @@ export class GroupService {
         },
       );
       if (updated.affected) {
-        return this.findOne(groupId);
+        return this.findOne(groupId, email);
       }
     } catch (e) {
       throw new BadRequestException(e.message);
@@ -155,7 +164,7 @@ export class GroupService {
     );
 
     if (update?.affected) {
-      return this.findOne(group.id);
+      return this.findOne(group.id, user.email);
     } else {
       throw new BadRequestException('Group not found');
     }

@@ -56,3 +56,11 @@ export const updateGroupMemberRole = async (
   });
   return response;
 };
+
+export const kickGroupMember = async (groupId: number, userId: number) => {
+  const response = await httpPost(`${API_URL}/group-members/kick`, {
+    groupId,
+    userId,
+  });
+  return response;
+};

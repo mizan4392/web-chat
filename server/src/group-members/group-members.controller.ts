@@ -10,6 +10,7 @@ import {
 import { GroupMembersService } from './group-members.service';
 import {
   CreateGroupMemberDto,
+  KickMemberDto,
   PromoteToModeratorDto,
 } from './dto/create-group-member.dto';
 import { AuthGuard, CurrentUser } from 'src/AuthGard';
@@ -34,6 +35,11 @@ export class GroupMembersController {
       createGroupMemberDto,
       user,
     );
+  }
+
+  @Post('kick')
+  kickMember(@Body() data: KickMemberDto, @CurrentUser() user: User) {
+    return this.groupMembersService.kickMember(data, user.email);
   }
 
   @Get()

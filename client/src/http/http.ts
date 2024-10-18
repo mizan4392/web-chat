@@ -94,7 +94,7 @@ export async function httpDelete(
 async function handleResponse(response: Response): Promise<any> {
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error);
+    throw new Error(error?.message);
   }
   return response.json();
 }
