@@ -92,7 +92,28 @@ export class GroupMembersService {
       //TODO: delete all user message in the group or update the message to show user has been kicked
       return true;
     } catch (e) {
-      console.log(e);
+      throw new BadRequestException(e.message);
+    }
+  }
+  async leaveGroup(groupId: number, email: string) {
+    const currentUser = await this.userService.findUserByEmail(email);
+    const userGroup = await this.groupMemberRepository.findOne({
+      where: {
+        groupId,
+      },
+      relations: ['group'],
+    });
+
+    if (!userGroup) {
+      throw new BadRequestException('Group not found');
+    }
+    try {
+      await this.groupMemberRepository.delete({
+        groupId,
+        userId: currentUser.id,
+      });
+      return true;
+    } catch (e) {
       throw new BadRequestException(e.message);
     }
   }

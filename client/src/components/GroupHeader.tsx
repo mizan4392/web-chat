@@ -9,8 +9,9 @@ import {
 } from "@ant-design/icons";
 import { useModal } from "../hooks/useModal";
 import { MemberRole } from "../store/types";
-import { deleteGroup, getUserGroups } from "../http/group.http";
+import { deleteGroup, getUserGroups, leaveGroup } from "../http/group.http";
 import { useGeneralStore } from "../store/general.store";
+import { useNavigate } from "react-router-dom";
 
 type GroupHeaderProps = {
   name?: string;
@@ -21,7 +22,7 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
   const { selectedGroup, setUserGroups } = useGeneralStore();
   const inviteModal = useModal("InviteToGroup");
   const updateModal = useModal("UpdateGroup");
-
+  const navigate = useNavigate();
   const confirm = () => {
     modal.confirm({
       title: "Do you want to delete this group?",
@@ -37,6 +38,33 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
             getUserGroups().then((data) => {
               setUserGroups(data);
             });
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error",
+              description: err.message,
+            });
+          });
+      },
+    });
+  };
+
+  const handleLeaveGroup = () => {
+    modal.confirm({
+      title: "Do you want to leave this group?",
+      icon: <ExclamationCircleOutlined />,
+      okText: "Leave",
+      cancelText: "Close",
+      onOk: () => {
+        leaveGroup(Number(selectedGroup?.id))
+          .then(() => {
+            notification.success({
+              message: "You have left the group",
+            });
+            getUserGroups().then((data) => {
+              setUserGroups(data);
+            });
+            navigate("/");
           })
           .catch((err) => {
             notification.error({
@@ -89,6 +117,7 @@ export default function GroupHeader({ name, role }: GroupHeaderProps) {
       label: "Leave Group",
       icon: <PoweroffOutlined />,
       disabled: role === "admin" ? true : false,
+      onClick: handleLeaveGroup,
     },
   ];
   return (

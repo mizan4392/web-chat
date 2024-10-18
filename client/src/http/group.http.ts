@@ -64,3 +64,10 @@ export const kickGroupMember = async (groupId: number, userId: number) => {
   });
   return response;
 };
+
+export const leaveGroup = async (groupId: number) => {
+  const response = await httpPost(`${API_URL}/group-members/leave`, {
+    groupId,
+  });
+  return response;
+};

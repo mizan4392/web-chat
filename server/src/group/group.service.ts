@@ -70,7 +70,7 @@ export class GroupService {
       id,
       userExist.id,
     );
-    console.log('userValid', userValid);
+
     if (!userValid) {
       throw new BadRequestException('User not found in group');
     }

@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { GroupMembersService } from './group-members.service';
 import {
@@ -40,6 +41,14 @@ export class GroupMembersController {
   @Post('kick')
   kickMember(@Body() data: KickMemberDto, @CurrentUser() user: User) {
     return this.groupMembersService.kickMember(data, user.email);
+  }
+
+  @Post('leave')
+  leaveGroup(@Body('groupId') groupId: number, @CurrentUser() user: User) {
+    if (!groupId) {
+      throw new BadRequestException('Group id is required');
+    }
+    return this.groupMembersService.leaveGroup(groupId, user.email);
   }
 
   @Get()
