@@ -1,12 +1,27 @@
 import { FileAddOutlined, SendOutlined } from "@ant-design/icons";
-import { Col, Input, Row, Tooltip } from "antd";
+import { Col, Input, notification, Row, Tooltip } from "antd";
 import React from "react";
+import { sendMessage } from "../http/message.http";
+import { useParams } from "react-router-dom";
 
 export default function MessageInput() {
   const [message, setMessage] = React.useState("");
+  const { groupId } = useParams();
   const onSendMessage = () => {
     console.log(message);
-    setMessage("");
+    sendMessage({
+      message,
+      groupId: parseInt(groupId as string),
+    })
+      .then((data) => {
+        setMessage("");
+        console.log(data);
+      })
+      .catch((e) => {
+        notification.error({
+          message: e?.message,
+        });
+      });
   };
   return (
     <div className="w-full">

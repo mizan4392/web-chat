@@ -139,8 +139,13 @@ export class GroupMembersService {
     return `This action returns all groupMembers`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} groupMember`;
+  findOne(userId: number) {
+    return this.groupMemberRepository.findOne({
+      where: {
+        userId,
+      },
+      relations: ['group'],
+    });
   }
 
   async addMember(groupId: number, userId: number) {

@@ -7,13 +7,14 @@ import { JwtService } from '@nestjs/jwt';
 import { GlobalService } from './global.service';
 import { Group } from './group/entities/group.entity';
 import { GroupMember } from './group-members/entities/group-member.entity';
+import { GroupMessage } from './group-message/entities/group-message.entity';
 
 @Global()
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       ...dbConfig,
-      entities: [User, Group, GroupMember],
+      entities: [User, Group, GroupMember, GroupMessage],
     }),
   ],
   providers: [AuthGuard, JwtService, GlobalService],

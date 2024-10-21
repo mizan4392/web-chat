@@ -11,6 +11,7 @@ import { GroupMembersModule } from './group-members/group-members.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { DataSource } from 'typeorm';
+import { GroupMessageModule } from './group-message/group-message.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DataSource } from 'typeorm';
     UserModule,
     GroupModule,
     GroupMembersModule,
+    GroupMessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

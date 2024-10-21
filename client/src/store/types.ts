@@ -32,3 +32,13 @@ export type GroupMember = {
   userId: number;
   role: MemberRoleType;
 };
+
+export type Message = {
+  id: number;
+  message: string;
+  userId: number;
+  user: User;
+  group: Group;
+  groupId: number;
+  createdAt: string;
+};

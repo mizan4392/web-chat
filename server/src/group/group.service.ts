@@ -201,4 +201,12 @@ export class GroupService {
       relations: ['owner'],
     });
   }
+
+  getGroupById(groupId: number) {
+    return this.groupRepository.findOne({
+      where: {
+        id: groupId,
+      },
+    });
+  }
 }
