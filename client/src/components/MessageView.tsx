@@ -1,0 +1,44 @@
+export default function MessageView() {
+  return (
+    <div className="h-full w-full message-view">
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+      <h1>MessageView</h1>
+    </div>
+  );
+}
