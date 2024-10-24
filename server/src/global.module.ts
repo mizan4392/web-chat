@@ -8,6 +8,7 @@ import { GlobalService } from './global.service';
 import { Group } from './group/entities/group.entity';
 import { GroupMember } from './group-members/entities/group-member.entity';
 import { GroupMessage } from './group-message/entities/group-message.entity';
+import { WebSocketGuard } from './WebSocketGard';
 
 @Global()
 @Module({
@@ -17,7 +18,7 @@ import { GroupMessage } from './group-message/entities/group-message.entity';
       entities: [User, Group, GroupMember, GroupMessage],
     }),
   ],
-  providers: [AuthGuard, JwtService, GlobalService],
-  exports: [AuthGuard, JwtService, GlobalService],
+  providers: [AuthGuard, JwtService, GlobalService, WebSocketGuard],
+  exports: [AuthGuard, JwtService, GlobalService, WebSocketGuard],
 })
 export class GlobalModule {}

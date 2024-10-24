@@ -38,7 +38,7 @@ export type Message = {
   message: string;
   userId: number;
   user: User;
-  group: Group;
+  group?: Group;
   groupId: number;
   createdAt: string;
 };

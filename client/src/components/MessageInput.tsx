@@ -1,14 +1,14 @@
 import { FileAddOutlined, SendOutlined } from "@ant-design/icons";
 import { Col, Input, notification, Row, Tooltip } from "antd";
 import React from "react";
-import { sendMessage } from "../http/message.http";
+
 import { useParams } from "react-router-dom";
+import { sendMessage } from "../http/message.http";
 
 export default function MessageInput() {
   const [message, setMessage] = React.useState("");
   const { groupId } = useParams();
   const onSendMessage = () => {
-    console.log(message);
     sendMessage({
       message,
       groupId: parseInt(groupId as string),

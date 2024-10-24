@@ -7,14 +7,16 @@ import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 
 import { GroupMembersService } from 'src/group-members/group-members.service';
+import { ChatGateway } from './chat-gateway';
 
 @Injectable()
 export class GroupMessageService {
   constructor(
     @InjectRepository(GroupMessage)
-    private groupRepository: Repository<GroupMessage>,
+    private groupMessageRepository: Repository<GroupMessage>,
     private userService: UserService,
     private groupMemberService: GroupMembersService,
+    private chatGetWay: ChatGateway,
   ) {}
   async create(createGroupMessageDto: CreateGroupMessageDto, email: string) {
     const userExist = await this.userService.findUserByEmail(email);
@@ -27,11 +29,23 @@ export class GroupMessageService {
       userId: userExist.id,
       createdAt: new Date().toISOString(),
     };
-    return this.groupRepository.save(createGroupData);
+
+    const saved = await this.groupMessageRepository.save(createGroupData);
+    const message = await this.groupMessageRepository.findOne({
+      where: {
+        id: saved.id,
+      },
+      relations: ['user'],
+    });
+    this.chatGetWay.server
+      .to(createGroupMessageDto.groupId?.toString())
+      .emit('receiveMessage', message);
+
+    return true;
   }
 
   fetchGroupMessages(groupId: number, page: number) {
-    return this.groupRepository.find({
+    return this.groupMessageRepository.find({
       where: {
         groupId,
       },

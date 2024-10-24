@@ -6,6 +6,7 @@ import { GroupMessage } from './entities/group-message.entity';
 import { UserModule } from 'src/user/user.module';
 
 import { GroupMembersModule } from 'src/group-members/group-members.module';
+import { ChatGateway } from './chat-gateway';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { GroupMembersModule } from 'src/group-members/group-members.module';
     GroupMembersModule,
   ],
   controllers: [GroupMessageController],
-  providers: [GroupMessageService],
+  providers: [GroupMessageService, ChatGateway],
 })
 export class GroupMessageModule {}

@@ -5,13 +5,14 @@ import { Flex, notification } from "antd";
 import { useMessageStore } from "../store/message.store";
 import { useGeneralStore } from "../store/general.store";
 import ChatMessage from "./ChatMessage";
+import { socket } from "../http/socket";
+import { Message } from "../store/types";
 
 export default function MessageView() {
   const [page, setPage] = useState(1);
-  const { messages, setMessages } = useMessageStore();
+  const { messages, setMessages, addMessage } = useMessageStore();
   const { groupId } = useParams();
   const { user } = useGeneralStore();
-  console.log(user);
 
   useEffect(() => {
     if (groupId) {
@@ -24,8 +25,18 @@ export default function MessageView() {
             message: e?.message,
           });
         });
+
+      socket.on("receiveMessage", (newMessage: Message) => {
+        console.log("newMessage", newMessage);
+        addMessage(newMessage);
+      });
     }
+    return () => {
+      socket.off("receiveMessage");
+    };
   }, [groupId]);
+
+  console.log("messages", messages);
   return (
     <div className="h-full w-full message-view">
       <Flex className="h-full w-full" gap={"middle"} vertical>

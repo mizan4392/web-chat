@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const API_URL = import.meta.env.VITE_API_URL as string;
+
 export const getCookies = (name: string) => {
   const value = `; ${document.cookie}`;
 
