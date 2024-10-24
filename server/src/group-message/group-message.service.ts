@@ -41,7 +41,7 @@ export class GroupMessageService {
       .to(createGroupMessageDto.groupId?.toString())
       .emit('receiveMessage', message);
 
-    return true;
+    return message;
   }
 
   fetchGroupMessages(groupId: number, page: number) {
@@ -52,6 +52,9 @@ export class GroupMessageService {
       take: 10,
       skip: 10 * (page - 1),
       relations: ['user'],
+      order: {
+        createdAt: 'ASC',
+      },
     });
   }
 

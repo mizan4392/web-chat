@@ -1,5 +1,5 @@
 import { FileAddOutlined, SendOutlined } from "@ant-design/icons";
-import { Col, Input, notification, Row, Tooltip } from "antd";
+import { Col, Input, notification, Row, Tooltip, Upload } from "antd";
 import React from "react";
 
 import { useParams } from "react-router-dom";
@@ -7,21 +7,25 @@ import { sendMessage } from "../http/message.http";
 
 export default function MessageInput() {
   const [message, setMessage] = React.useState("");
+
   const { groupId } = useParams();
   const onSendMessage = () => {
     sendMessage({
       message,
       groupId: parseInt(groupId as string),
     })
-      .then((data) => {
+      .then(() => {
         setMessage("");
-        console.log(data);
       })
       .catch((e) => {
         notification.error({
           message: e?.message,
         });
       });
+  };
+
+  const onFileUpload = (files) => {
+    console.log(files);
   };
   return (
     <div className="w-full">
@@ -40,7 +44,12 @@ export default function MessageInput() {
             textAlign: "center",
           }}
         >
-          <FileAddOutlined />
+          <Tooltip title="Attach">
+            <Upload onChange={(files) => onFileUpload(files)}>
+              <FileAddOutlined className=" cursor-pointer" />
+            </Upload>
+          </Tooltip>
+          {/* <FileAddOutlined /> */}
         </Col>
         <Col
           span={2}
