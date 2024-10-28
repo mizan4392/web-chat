@@ -84,6 +84,7 @@ const MemberCard = ({
       .catch((e: any) => {
         notification.error({
           message: "Failed to promote user",
+          description: e.message,
         });
       });
   };
