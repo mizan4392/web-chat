@@ -9,6 +9,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { User } from './user/entities/user.entity';
 
+import { WsException } from '@nestjs/websockets';
+
 @Injectable()
 export class WebSocketGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
@@ -26,7 +28,7 @@ export class WebSocketGuard implements CanActivate {
         publicKey: process.env.JWT_PUBLIC_KEY,
         algorithms: ['RS256'],
       });
-
+      console.log(payload);
       client['user'] = {
         email: payload.email,
         name: payload.name,
@@ -34,7 +36,7 @@ export class WebSocketGuard implements CanActivate {
       };
     } catch (e) {
       console.log('error=>>>>>', e);
-      throw new UnauthorizedException('Unauthorized');
+      throw new WsException('Unauthorized');
     }
     return true;
   }

@@ -11,12 +11,12 @@ export default function MessageLayout() {
   useEffect(() => {
     if (groupId?.trim() !== "") {
       // Fetch messages here
-      socket.emit("joinGroup", groupId);
+      socket?.emit("joinGroup", groupId);
     }
     return () => {
-      socket.off("joinGroup");
+      socket?.off("joinGroup");
     };
-  }, [groupId]);
+  }, [groupId, socket]);
   return (
     <Flex gap={"middle"} vertical className="h-full">
       <Flex flex={7}>

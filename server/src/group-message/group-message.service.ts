@@ -49,11 +49,11 @@ export class GroupMessageService {
       where: {
         groupId,
       },
-      take: 10,
-      skip: 10 * (page - 1),
+      take: 20,
+      skip: 20 * (page - 1),
       relations: ['user'],
       order: {
-        createdAt: 'ASC',
+        createdAt: 'DESC',
       },
     });
   }

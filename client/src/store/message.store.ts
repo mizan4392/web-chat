@@ -10,10 +10,18 @@ interface MessageStore {
 
 export const useMessageStore = create<MessageStore>((set) => ({
   messages: [],
-  setMessages: (messages) => set({ messages }),
+  setMessages: (messages) => set({ messages: sortMessages(messages) }),
   addMessages(messages) {
-    set((state) => ({ messages: [...state.messages, ...messages] }));
+    set((state) => ({
+      messages: sortMessages([...state.messages, ...sortMessages(messages)]),
+    }));
   },
   addMessage: (message) =>
-    set((state) => ({ messages: [...state.messages, message] })),
+    set((state) => ({ messages: sortMessages([...state.messages, message]) })),
 }));
+
+const sortMessages = (messages: Message[]) => {
+  return messages.sort((a, b) => {
+    return a.id - b.id;
+  });
+};
