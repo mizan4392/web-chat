@@ -7,12 +7,14 @@ import { UserModule } from 'src/user/user.module';
 
 import { GroupMembersModule } from 'src/group-members/group-members.module';
 import { ChatGateway } from './chat-gateway';
+import { GlobalModule } from 'src/global.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([GroupMessage]),
     UserModule,
     GroupMembersModule,
+    GlobalModule,
   ],
   controllers: [GroupMessageController],
   providers: [GroupMessageService, ChatGateway],

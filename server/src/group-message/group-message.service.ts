@@ -1,5 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateGroupMessageDto } from './dto/create-group-message.dto';
+import {
+  CreateGroupMessageDto,
+  SendFileDto,
+} from './dto/create-group-message.dto';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupMessage } from './entities/group-message.entity';
@@ -8,6 +11,7 @@ import { UserService } from 'src/user/user.service';
 
 import { GroupMembersService } from 'src/group-members/group-members.service';
 import { ChatGateway } from './chat-gateway';
+import { getFileType } from 'src/group/constant';
 
 @Injectable()
 export class GroupMessageService {
@@ -60,6 +64,37 @@ export class GroupMessageService {
 
   findAll() {
     return `This action returns all groupMessage`;
+  }
+
+  async sendFiles(data: SendFileDto, imageUrl: string, email: string) {
+    const userExist = await this.userService.findUserByEmail(email);
+    const groupExist = await this.groupMemberService.findOne(userExist.id);
+
+    if (groupExist?.groupId !== Number(data.groupId)) {
+      throw new BadRequestException('User not in group');
+    }
+    const fileType = getFileType(imageUrl);
+
+    const createGroupData: GroupMessage = {
+      ...data,
+      userId: userExist.id,
+      createdAt: new Date().toISOString(),
+      imageUrl,
+      fileType,
+    };
+
+    const saved = await this.groupMessageRepository.save(createGroupData);
+    const message = await this.groupMessageRepository.findOne({
+      where: {
+        id: saved.id,
+      },
+      relations: ['user'],
+    });
+    this.chatGetWay.server
+      .to(groupExist.groupId?.toString())
+      .emit('receiveMessage', message);
+
+    return message;
   }
 
   findOne(id: number) {

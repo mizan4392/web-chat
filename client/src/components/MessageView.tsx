@@ -91,9 +91,11 @@ export default function MessageView() {
             >
               <ChatMessage
                 user={message.user}
-                text={message.message}
+                text={message?.message}
                 isOwnerMessage={message.userId === user?.id}
                 time={message.createdAt}
+                imageUrl={message?.imageUrl}
+                fileType={message?.fileType}
               />
             </Flex>
           );

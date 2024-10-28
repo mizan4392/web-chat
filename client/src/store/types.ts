@@ -41,4 +41,6 @@ export type Message = {
   group?: Group;
   groupId: number;
   createdAt: string;
+  imageUrl?: string;
+  fileType?: string;
 };

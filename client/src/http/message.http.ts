@@ -1,4 +1,4 @@
-import { API_URL, httpGet, httpPost } from "./http";
+import { API_URL, httpGet, httpPost, httpPostFile } from "./http";
 
 export type SendMessageType = {
   message: string;
@@ -7,6 +7,14 @@ export type SendMessageType = {
 
 export const sendMessage = async (data: SendMessageType) => {
   const response = await httpPost(`${API_URL}/group-message`, data);
+  return response;
+};
+
+export const onSendFile = async (data: FormData) => {
+  const response = await httpPostFile(
+    `${API_URL}/group-message/send-file`,
+    data
+  );
   return response;
 };
 

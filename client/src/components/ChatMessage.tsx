@@ -8,11 +8,13 @@ type ChatMessageProps = {
   imageUrl?: string;
   isOwnerMessage?: boolean;
   time: string;
+  fileType?: string;
 };
 export default function ChatMessage({
   text,
   user,
   imageUrl,
+  fileType,
   isOwnerMessage,
   time,
 }: ChatMessageProps) {
@@ -39,7 +41,13 @@ export default function ChatMessage({
           }}
         >
           <div>
-            <span>{text}</span>
+            {text && <span>{text}</span>}
+            {fileType === "image" && (
+              <img src={imageUrl} alt="image" className="w-80 h-80" />
+            )}
+            {fileType === "video" && (
+              <video src={imageUrl} controls className="w-80 h-80" />
+            )}
           </div>
         </Card>
       </div>

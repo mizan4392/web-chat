@@ -7,3 +7,8 @@ export class CreateGroupMessageDto {
   @IsNotEmpty()
   groupId: number;
 }
+
+export class SendFileDto {
+  @IsNotEmpty()
+  groupId: number;
+}

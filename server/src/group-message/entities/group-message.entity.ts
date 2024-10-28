@@ -7,8 +7,14 @@ export class GroupMessage {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({ type: 'text', nullable: false })
-  message: string;
+  @Column({ type: 'text', nullable: true })
+  message?: string;
+
+  @Column({ type: 'text', nullable: true })
+  imageUrl?: string;
+
+  @Column({ type: 'text', nullable: true })
+  fileType?: string;
 
   @Column()
   userId: number;
