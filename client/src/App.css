@@ -1,3 +1,7 @@
-#root{
+#root {
   height: 100vh;
+}
+
+.ant-upload-list-item-container {
+  display: none !important;
 }

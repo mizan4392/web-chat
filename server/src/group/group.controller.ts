@@ -35,15 +35,18 @@ export class GroupController {
     @UploadedFile() file: any,
     @CurrentUser() user: User,
   ) {
-    let imageUrl = '';
+    let imageUrl;
     if (file) {
-      imageUrl = await this.globalService.storeImageAndGetUrl(
+      imageUrl = await this.globalService.uploadBufferFileToCloudinary(
         file,
-        DEFAULT_GROUP_IMAGE_URL,
+        `${DEFAULT_GROUP_IMAGE_URL}/${createGroupDto.groupId}/default`,
       );
     }
 
-    return this.groupService.create({ ...createGroupDto, imageUrl }, user);
+    return this.groupService.create(
+      { ...createGroupDto, imageUrl: imageUrl?.url },
+      user,
+    );
   }
   @Post('join')
   async joinGroup(
@@ -86,16 +89,15 @@ export class GroupController {
     @UploadedFile() file: any,
     @CurrentUser() user: User,
   ) {
-    console.log('updateGroupDto', updateGroupDto);
-    let imageUrl = '';
+    let imageUrl;
     if (file) {
-      imageUrl = await this.globalService.storeImageAndGetUrl(
+      imageUrl = await this.globalService.uploadBufferFileToCloudinary(
         file,
-        DEFAULT_GROUP_IMAGE_URL,
+        `${DEFAULT_GROUP_IMAGE_URL}/${updateGroupDto.groupId}/default`,
       );
     }
-    if (imageUrl.trim()) {
-      updateGroupDto.imageUrl = imageUrl;
+    if (imageUrl?.url) {
+      updateGroupDto.imageUrl = imageUrl.url;
     }
 
     return this.groupService.update(updateGroupDto, user);

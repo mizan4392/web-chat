@@ -1,5 +1,6 @@
-export const DEFAULT_GROUP_IMAGE_URL = 'images/group/default';
-export const GROUP_IMAGE_URL = 'images/group/';
+export const APP_URL_CLOUDINARY = 'webchat';
+export const DEFAULT_GROUP_IMAGE_URL = `${APP_URL_CLOUDINARY}/images/group`;
+export const GROUP_IMAGE_URL = `${APP_URL_CLOUDINARY}/images/group/`;
 
 export const getFileType = (url: string): string => {
   const extension = url.split('.').pop()?.toLowerCase();

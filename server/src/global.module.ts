@@ -1,3 +1,4 @@
+import { CloudinaryModule } from './../cloudinary.module';
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DB_URL } from './database.config';
@@ -24,6 +25,7 @@ import { WebSocketGuard } from './WebSocketGard';
       synchronize: true,
       entities: [User, Group, GroupMember, GroupMessage],
     }),
+    CloudinaryModule,
   ],
   providers: [AuthGuard, JwtService, GlobalService, WebSocketGuard],
   exports: [AuthGuard, JwtService, GlobalService, WebSocketGuard],

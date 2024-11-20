@@ -44,14 +44,19 @@ export class GroupMessageController {
     @UploadedFile() file: any,
     @CurrentUser() user: User,
   ) {
-    let imageUrl = '';
+    let uploadResponse;
     if (file) {
-      imageUrl = await this.globalService.storeImageAndGetUrl(
+      uploadResponse = await this.globalService.uploadBufferFileToCloudinary(
         file,
-        `${GROUP_IMAGE_URL}/${data.groupId}`,
+        `${GROUP_IMAGE_URL}/${data.groupId}/attachments`,
       );
     }
-    return this.groupMessageService.sendFiles(data, imageUrl, user.email);
+
+    return this.groupMessageService.sendFiles(
+      data,
+      uploadResponse?.url,
+      user.email,
+    );
   }
 
   @Get('fetch/:groupId/:page')
