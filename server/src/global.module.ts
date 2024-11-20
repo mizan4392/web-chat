@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dbConfig } from './database.config';
+import { DB_URL } from './database.config';
 import { User } from './user/entities/user.entity';
 import { AuthGuard } from './AuthGard';
 import { JwtService } from '@nestjs/jwt';
@@ -14,7 +14,14 @@ import { WebSocketGuard } from './WebSocketGard';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      ...dbConfig,
+      // ...dbConfig,
+      type: 'postgres',
+      url: DB_URL,
+      ssl: {
+        rejectUnauthorized: false, // Allows self-signed certificates (sufficient for Aiven)
+      },
+      autoLoadEntities: true,
+      synchronize: true,
       entities: [User, Group, GroupMember, GroupMessage],
     }),
   ],

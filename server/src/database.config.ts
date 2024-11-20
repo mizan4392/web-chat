@@ -11,3 +11,5 @@ export const dbConfig: TypeOrmModuleOptions = {
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
 };
+
+export const DB_URL = process.env.DATABASE_URL;
