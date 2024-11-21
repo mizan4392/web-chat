@@ -9,8 +9,6 @@ import { JwtService } from '@nestjs/jwt';
 
 import { User } from './user/entities/user.entity';
 
-import { WsException } from '@nestjs/websockets';
-
 @Injectable()
 export class WebSocketGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
@@ -35,8 +33,11 @@ export class WebSocketGuard implements CanActivate {
         imageUrl: payload.imageUrl,
       };
     } catch (e) {
-      console.log('error=>>>>>', e);
-      throw new WsException('Unauthorized');
+      client.emit('auth_error', {
+        message: 'jwt expired',
+      });
+
+      return false;
     }
     return true;
   }
@@ -45,7 +46,7 @@ export class WebSocketGuard implements CanActivate {
 export const CurrentUser = createParamDecorator(
   async (data: unknown, ctx: ExecutionContext): Promise<User> => {
     const request = ctx.switchToWs().getClient();
-    console.log('request', request);
+
     return request.user;
   },
 );

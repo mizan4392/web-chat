@@ -18,8 +18,9 @@ const reinitializeSocket = async () => {
 };
 
 const setupSocketListeners = () => {
-  socket.on("connect_error", async (error) => {
-    console.error("Socket connection error:", error);
+  console.log("->>>>>>>", socket);
+  socket.on("auth_error", async (error) => {
+    console.log("Socket connection error:", error);
     if (error.message === "jwt expired") {
       await reinitializeSocket();
     }

@@ -15,7 +15,6 @@ import { WebSocketGuard } from './WebSocketGard';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      // ...dbConfig,
       type: 'postgres',
       url: DB_URL,
       ssl: {

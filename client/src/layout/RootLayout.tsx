@@ -59,7 +59,7 @@ export default function RootLayout() {
         <div className="h-full flex flex-col justify-between">
           <div className="demo-logo-vertical p-2">
             <img
-              src="../public/brand.png"
+              src="https://res.cloudinary.com/dmcimteb9/image/upload/v1732199779/brand_lum2fn.png"
               className="bg-white rounded-xl p-2"
             />
           </div>
