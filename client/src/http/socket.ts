@@ -1,7 +1,20 @@
 import io from "socket.io-client";
 import { getSessionToken } from "./http"; // Assume refreshSessionToken is implemented
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL as string;
+// let socket = io(SOCKET_URL, {
+// extraHeaders: {
+//   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
+// },
+// });
+
 let socket = io(SOCKET_URL, {
+  autoConnect: true,
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 2000,
+  // auth: {
+  //   token: getSessionToken(),
+  // },
   extraHeaders: {
     Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
   },
@@ -18,7 +31,6 @@ const reinitializeSocket = async () => {
 };
 
 const setupSocketListeners = () => {
-  console.log("->>>>>>>", socket);
   socket.on("auth_error", async (error) => {
     console.log("Socket connection error:", error);
     if (error.message === "jwt expired") {
@@ -31,4 +43,22 @@ const setupSocketListeners = () => {
 
 setupSocketListeners();
 
-export { socket };
+socket.on("connect_error", async (err) => {
+  console.log("Socket error:================>", err.message);
+
+  if (err.message === "jwt expired" || err.message === "Unauthorized") {
+    try {
+      const newToken = await getSessionToken();
+
+      socket.auth = {
+        token: newToken,
+      };
+
+      socket.connect(); // reconnect with new token
+    } catch (error) {
+      console.error("Token refresh failed", error);
+    }
+  }
+});
+
+export { socket, reinitializeSocket };

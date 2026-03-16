@@ -41,9 +41,12 @@ export class GroupMessageService {
       },
       relations: ['user'],
     });
-    this.chatGetWay.server
+    console.log('emitted message', message);
+    await this.chatGetWay.server
       .to(createGroupMessageDto.groupId?.toString())
       .emit('receiveMessage', message);
+
+    console.log('emitted message', message);
 
     return message;
   }

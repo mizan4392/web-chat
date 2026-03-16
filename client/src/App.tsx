@@ -13,6 +13,7 @@ import JoinGroupModal from "./components/modals/JoinGroupModal";
 import RootLayout from "./layout/RootLayout";
 import InvitePeopleModal from "./components/modals/InvitePeople.modal";
 import UpdateGroupModal from "./components/modals/UpdateGroupModal";
+import { ToastContainer } from "react-toast";
 
 const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -41,6 +42,7 @@ function App() {
           <JoinGroupModal />
           <InvitePeopleModal />
         </Layout>
+        <ToastContainer />
       </ProtectedRoutes>
     </ClerkProvider>
   );

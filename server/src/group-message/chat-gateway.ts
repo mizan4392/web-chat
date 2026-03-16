@@ -21,7 +21,8 @@ export class ChatGateway {
 
   @SubscribeMessage('joinGroup')
   handleJoinGroup(socket: Socket, groupId: string): void {
-    console.log('socketId=>>', socket.id);
+    console.log('=======JOINING GROUP========');
+    console.log('socketId=>>', socket);
     console.log('group=>>', groupId);
     console.log('=============');
     socket.join(groupId);
@@ -33,9 +34,6 @@ export class ChatGateway {
     { groupId, message }: { groupId: string; message: string },
     // @CurrentUser() user: User,
   ): Promise<void> {
-    console.log('socketId=>>', socket.id);
-    console.log('groupId=>>', groupId);
-    console.log('message=>>', message);
     // console.log('user=>>', user);
     // const savedMessage = await this.groupMessageService.create(
     //   {
@@ -45,6 +43,7 @@ export class ChatGateway {
     //   user.email,
     // );
     // console.log('savedMessage', savedMessage);
-    this.server.to(groupId).emit('receiveMessage', '');
+    // this.server.to(groupId).emit('receiveMessage', '');
+    this.server.to(groupId).emit('receiveMessage', message);
   }
 }

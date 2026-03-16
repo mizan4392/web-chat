@@ -5,7 +5,7 @@ client/node_modules
 server/node_modules
 server/dist
 server/postgres-data
-
+postgres-data
 *.env
 /.pnp
 .pnp.js

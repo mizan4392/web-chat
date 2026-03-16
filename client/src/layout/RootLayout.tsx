@@ -12,6 +12,7 @@ import { useGeneralStore } from "../store/general.store";
 import { getUserGroups } from "../http/group.http";
 import { Link, Route, Routes } from "react-router-dom";
 import ChatLayOut from "./ChatLayOut";
+import useSocketStatus from "../hooks/useConnectingStatus";
 
 export default function RootLayout() {
   const { user, setUser, userGroups, setUserGroups } = useGeneralStore();
@@ -52,6 +53,7 @@ export default function RootLayout() {
 
   const createGroupModal = useModal("CreateGroup");
   const joinGroupModal = useModal("JoinGroup");
+  const socketStatus = useSocketStatus();
 
   return (
     <Layout>
@@ -118,9 +120,23 @@ export default function RootLayout() {
       <Layout>
         <Header
           style={{ padding: 0, background: colorBgContainer }}
-          className="flex justify-center items-center"
+          className="flex justify-center items-center gap-4"
         >
-          WebChat
+          <div>WebChat</div>
+
+          <div>
+            {socketStatus === "connected" && (
+              <p style={{ color: "green" }}>🟢 Connected</p>
+            )}
+
+            {socketStatus === "reconnecting" && (
+              <p style={{ color: "orange" }}>🟡 Reconnecting...</p>
+            )}
+
+            {socketStatus === "disconnected" && (
+              <p style={{ color: "red" }}>🔴 Disconnected</p>
+            )}
+          </div>
         </Header>
         <Content
           style={{
