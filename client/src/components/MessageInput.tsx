@@ -15,12 +15,10 @@ export default function MessageInput() {
       message,
       groupId: parseInt(groupId as string),
     })
-      .then((data) => {
-        console.log("message sent", data);
+      .then(() => {
         setMessage("");
       })
       .catch((e) => {
-        console.log("send message :error", e);
         notification.error({
           message: e?.message,
         });

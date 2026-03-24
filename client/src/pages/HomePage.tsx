@@ -41,7 +41,6 @@ export default function HomePage() {
   useEffect(() => {
     if (user) {
       getUserGroups().then((data) => {
-        console.log(data);
         setUserGroups(data);
       });
     }

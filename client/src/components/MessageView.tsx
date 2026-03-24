@@ -38,7 +38,6 @@ export default function MessageView() {
         });
 
       socket?.on("receiveMessage", (newMessage: Message) => {
-        console.log("Received new message:", newMessage);
         addMessage(newMessage);
         if (bottomRef.current) {
           bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -53,14 +52,11 @@ export default function MessageView() {
   useEffect(() => {
     const handleScroll = async () => {
       if (scrollRef.current.scrollTop === 0) {
-        console.log("fetching more messages");
-        console.log("Page", page);
         const data = await fetchGroupMessages({
           groupId: parseInt(groupId as string),
           page: page + 1,
         });
         if (data?.length) {
-          console.log(data);
           addMessages(data);
         }
         page = page + 1;

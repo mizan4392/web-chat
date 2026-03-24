@@ -18,11 +18,9 @@ export default function MessageLayout() {
 
     const joinGroup = () => {
       socket.emit("joinGroup", groupId, (response: { success: boolean }) => {
-        console.log("Join group response:", response);
         if (response?.success) {
           console.log("Joined group successfully");
         } else {
-          console.log("Join failed, retrying...");
           reinitializeSocket();
           retryTimeout = setTimeout(joinGroup, 2000); // retry after 2s
         }

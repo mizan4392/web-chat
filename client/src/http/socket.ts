@@ -32,7 +32,6 @@ const reinitializeSocket = async () => {
 
 const setupSocketListeners = () => {
   socket.on("auth_error", async (error) => {
-    console.log("Socket connection error:", error);
     if (error.message === "jwt expired") {
       await reinitializeSocket();
     }
@@ -44,8 +43,6 @@ const setupSocketListeners = () => {
 setupSocketListeners();
 
 socket.on("connect_error", async (err) => {
-  console.log("Socket error:================>", err.message);
-
   if (err.message === "jwt expired" || err.message === "Unauthorized") {
     try {
       const newToken = await getSessionToken();
@@ -56,7 +53,7 @@ socket.on("connect_error", async (err) => {
 
       socket.connect(); // reconnect with new token
     } catch (error) {
-      console.error("Token refresh failed", error);
+      console.error("Failed to refresh token:", error);
     }
   }
 });

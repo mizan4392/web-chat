@@ -26,7 +26,7 @@ export class WebSocketGuard implements CanActivate {
         publicKey: process.env.JWT_PUBLIC_KEY,
         algorithms: ['RS256'],
       });
-      console.log(payload);
+
       client['user'] = {
         email: payload.email,
         name: payload.name,

@@ -31,7 +31,6 @@ export class GlobalService {
     file: Express.Multer.File,
     folder: string,
   ): Promise<any> {
-    console.log(file);
     return this.cloudinaryClient.uploader.upload(file.path, {
       folder,
     });

@@ -24,7 +24,6 @@ export default function JoinGroupModal() {
           setInviteCode("");
         })
         .catch((error) => {
-          console.log(error);
           setInviteCode("");
           notification.error({
             message: "Failed to join group",
