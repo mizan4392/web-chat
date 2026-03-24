@@ -21,7 +21,7 @@ services:
     build: ./server
     container_name: web_chat_backend
     ports:
-      - "3000:3000"
+      - "5001:3000"
     env_file:
       - ./server/.env
     environment:
@@ -33,7 +33,7 @@ services:
     build: ./client
     container_name: web_chat_frontend
     ports:
-      - "5173:5173"
+      - "5002:5173"
     env_file:
       - ./client/.env
       
