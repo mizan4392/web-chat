@@ -16,6 +16,6 @@ RUN npm run build
 RUN npm install -g serve
 
 # Start the static server
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["serve", "-s", "dist", "-l", "5173"]
 
-EXPOSE 3000
+EXPOSE 5173

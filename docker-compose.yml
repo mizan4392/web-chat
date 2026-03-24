@@ -15,14 +15,13 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - postgres-network
+      - app_network
 
   backend:
     build: ./server
     container_name: web_chat_backend
-    restart: always
     ports:
-      - "5002:3000"
+      - "3000:3000"
     env_file:
       - ./server/.env
     environment:
@@ -33,13 +32,11 @@ services:
   frontend:
     build: ./client
     container_name: web_chat_frontend
-    restart: always
     ports:
-      - "5001:5173"
+      - "5173:5173"
     env_file:
       - ./client/.env
-    depends_on:
-      - backend
+      
     networks:
       - app_network
 
@@ -49,12 +46,10 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - redis-network
+      - app_network
 
 volumes:
   postgres-data:
 
 networks:
-  postgres-network:
-  redis-network:
   app_network:
