@@ -20,6 +20,7 @@ let socket = io(SOCKET_URL, {
   },
 
   path: "/api/socket.io",
+  transports: ["websocket"], // 👈 force this
 });
 
 const reinitializeSocket = async () => {
