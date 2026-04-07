@@ -4,6 +4,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+
 import { Server, Socket } from 'socket.io';
 
 import { WebSocketGuard } from 'src/WebSocketGard';
@@ -12,6 +13,7 @@ import { WebSocketGuard } from 'src/WebSocketGard';
   cors: {
     origin: '*',
   },
+  path: '/api/socket.io',
 })
 @UseGuards(WebSocketGuard)
 @Injectable()
