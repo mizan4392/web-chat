@@ -15,16 +15,18 @@ let socket = io(SOCKET_URL, {
   // auth: {
   //   token: getSessionToken(),
   // },
-  // extraHeaders: {
-  //   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
-  // },
-  auth: {
-    token: getSessionToken(),
+  extraHeaders: {
+    Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
   },
+
   path: "/api/socket.io",
 });
 
 const reinitializeSocket = async () => {
+  console.log("Reinitializing socket...");
+  if (socket) {
+    socket.disconnect();
+  }
   const newToken = await getSessionToken(); // Refresh the JWT token
   socket = io(SOCKET_URL, {
     extraHeaders: {

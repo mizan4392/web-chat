@@ -23,6 +23,7 @@ export class ChatGateway {
 
   @SubscribeMessage('joinGroup')
   handleJoinGroup(socket: Socket, groupId: string): void {
+    console.log(`Socket ${socket.id} joining group ${groupId}`);
     socket.join(groupId);
   }
 
