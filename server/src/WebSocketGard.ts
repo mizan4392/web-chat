@@ -14,7 +14,7 @@ export class WebSocketGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
   async canActivate(context: ExecutionContext) {
     const client = context.switchToWs().getClient();
-
+    const _token = client.handshake.auth.token;
     const [type, token] =
       client.handshake.headers.authorization?.split(' ') ?? [];
     if (!token?.length) {
@@ -22,7 +22,7 @@ export class WebSocketGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync(_token, {
         publicKey: process.env.JWT_PUBLIC_KEY,
         algorithms: ['RS256'],
       });
