@@ -15,8 +15,11 @@ let socket = io(SOCKET_URL, {
   // auth: {
   //   token: getSessionToken(),
   // },
-  extraHeaders: {
-    Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
+  // extraHeaders: {
+  //   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
+  // },
+  auth: {
+    token: getSessionToken(),
   },
   path: "/api/socket.io",
 });
