@@ -18,7 +18,7 @@ let socket = io(SOCKET_URL, {
   extraHeaders: {
     Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
   },
-  path: "/api/socket.io",
+  path: "/socket.io",
 });
 
 const reinitializeSocket = async () => {
