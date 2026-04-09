@@ -125,6 +125,9 @@ export default function RootLayout() {
           <div>WebChat</div>
 
           <div>
+            {socketStatus === "connecting" && (
+              <p style={{ color: "black" }}> connecting..</p>
+            )}
             {socketStatus === "connected" && (
               <p style={{ color: "green" }}>🟢 Connected</p>
             )}
