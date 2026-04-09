@@ -54,7 +54,7 @@ export default function RootLayout() {
   const createGroupModal = useModal("CreateGroup");
   const joinGroupModal = useModal("JoinGroup");
   const socketStatus = useSocketStatus();
-
+  console.log("=========socketStatus==========", socketStatus);
   return (
     <Layout>
       <Sider trigger={null} collapsed={true} collapsible>

@@ -13,6 +13,7 @@ postgres-data
 server/public
 # testing
 /coverage
+.vscode
 
 # next.js
 /.next/
