@@ -17,6 +17,7 @@ export class WebSocketGuard implements CanActivate {
 
     const [type, token] =
       client.handshake.headers.authorization?.split(' ') ?? [];
+    console.log('WebSocketGuard: Received token:', token);
     if (!token?.length) {
       throw new UnauthorizedException('Unauthorized');
     }

@@ -12,9 +12,9 @@ let socket = io(SOCKET_URL, {
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 2000,
-  // auth: {
-  //   token: getSessionToken(),
-  // },
+  auth: {
+    token: getSessionToken(),
+  },
   extraHeaders: {
     Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
   },
