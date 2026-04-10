@@ -33,6 +33,7 @@ export class ChatGateway {
     { groupId, message }: { groupId: string; message: string },
     // @CurrentUser() user: User,
   ): Promise<void> {
-    this.server.to(groupId).emit('receiveMessage', message);
+    console.log(`Received message for group ${groupId}: ${message}`);
+    await this.server.to(groupId).emit('receiveMessage', message);
   }
 }
