@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { socket } from "../http/socket";
 
 export default function useSocketStatus() {
-  const [status, setStatus] = useState("connecting");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -51,6 +51,6 @@ export default function useSocketStatus() {
       socket.io.off("reconnect");
     };
   }, []);
-  console.log("=======Socket status======= from useSocketStatus hook:", status);
+
   return status;
 }
