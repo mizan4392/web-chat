@@ -47,7 +47,7 @@ const setupSocketListeners = () => {
   // Add other event listeners here
 };
 
-setupSocketListeners();
+// setupSocketListeners();
 
 socket.on("connect_error", async (err) => {
   if (err.message === "jwt expired" || err.message === "Unauthorized") {
