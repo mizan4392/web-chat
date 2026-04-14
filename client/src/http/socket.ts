@@ -24,7 +24,6 @@ let socket = io(SOCKET_URL, {
 });
 
 const reinitializeSocket = async () => {
-  console.log("Reinitializing socket...");
   if (socket) {
     socket.disconnect();
   }

@@ -38,7 +38,6 @@ export default function MessageView() {
         });
 
       socket?.on("receiveMessage", (newMessage: Message) => {
-        console.log("received Message", newMessage);
         addMessage(newMessage);
         if (bottomRef.current) {
           bottomRef.current.scrollIntoView({ behavior: "smooth" });

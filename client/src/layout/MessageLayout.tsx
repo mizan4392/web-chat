@@ -4,6 +4,7 @@ import MessageView from "../components/MessageView";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { reinitializeSocket, socket } from "../http/socket";
+import { toast } from "react-toast";
 
 export default function MessageLayout() {
   const { groupId } = useParams();
@@ -19,7 +20,7 @@ export default function MessageLayout() {
     const joinGroup = () => {
       socket.emit("joinGroup", groupId, (response: { success: boolean }) => {
         if (response?.success) {
-          console.log("Joined group successfully");
+          toast.success("Joined group successfully");
         } else {
           reinitializeSocket();
           retryTimeout = setTimeout(joinGroup, 2000); // retry after 2s

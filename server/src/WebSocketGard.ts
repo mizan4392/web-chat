@@ -15,12 +15,10 @@ export class WebSocketGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const client = context.switchToWs().getClient();
 
-    // const [type, token] =
-    //   client.handshake.headers.authorization?.split(' ') ?? [];
     const token =
       client.handshake.auth?.token ||
       client.handshake.headers?.authorization?.split(' ')[1];
-    console.log('WebSocketGuard: Received token:', token);
+
     if (!token?.length) {
       throw new UnauthorizedException('Unauthorized');
     }
