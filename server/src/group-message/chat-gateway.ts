@@ -1,5 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import {
+  ConnectedSocket,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -17,9 +20,17 @@ import { WebSocketGuard } from 'src/WebSocketGard';
 })
 @UseGuards(WebSocketGuard)
 @Injectable()
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
+
+  handleConnection(@ConnectedSocket() client: Socket) {
+    console.log('✅ User connected:', client.id);
+  }
+
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    console.log('❌ User disconnected:', client.id);
+  }
 
   @SubscribeMessage('joinGroup')
   handleJoinGroup(socket: Socket, groupId: string): void {
