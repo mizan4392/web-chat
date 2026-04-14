@@ -51,6 +51,9 @@ export default function useSocketStatus() {
       socket.io.off("reconnect");
     };
   }, []);
-
+  console.log(
+    "=======Socket status======== from useSocketStatus hook:",
+    status,
+  );
   return status;
 }
