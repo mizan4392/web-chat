@@ -19,7 +19,7 @@ let socket = io(SOCKET_URL, {
   //   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
   // },
 
-  path: "/api/socket.io",
+  path: "/socket.io",
   transports: ["websocket"], // 👈 force this
 });
 
