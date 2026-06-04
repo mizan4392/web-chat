@@ -18,15 +18,15 @@ export default function useSocketStatus() {
     });
 
     socket.io.on("reconnect", () => {
-      setStatus("connected");
+      setStatus("reconnect");
     });
 
     socket.on("connect_error", () => {
-      setStatus("reconnecting");
+      setStatus("connect_error");
     });
 
     socket.on("auth_error", () => {
-      setStatus("reconnecting");
+      setStatus("auth_error");
     });
 
     return () => {
