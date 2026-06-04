@@ -1,11 +1,6 @@
 import io from "socket.io-client";
 import { getSessionToken } from "./http"; // Assume refreshSessionToken is implemented
 export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL as string;
-// let socket = io(SOCKET_URL, {
-// extraHeaders: {
-//   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
-// },
-// });
 
 let socket = io(SOCKET_URL, {
   autoConnect: true,
@@ -15,10 +10,6 @@ let socket = io(SOCKET_URL, {
   auth: {
     token: getSessionToken(),
   },
-  // extraHeaders: {
-  //   Authorization: `Bearer ${getSessionToken()}`, // Pass the JWT token here
-  // },
-
   path: "/api/socket.io",
   transports: ["websocket"], // 👈 force this
 });

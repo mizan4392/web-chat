@@ -1,18 +1,19 @@
 import { RedirectToSignIn, UserButton, useSession } from "@clerk/clerk-react";
-import { Layout, Menu, theme, Tooltip } from "antd";
+import { Avatar, Card, Layout, Menu, theme, Tooltip } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { useEffect } from "react";
 import { AimOutlined, PlusOutlined } from "@ant-design/icons";
 
 import { useModal } from "../hooks/useModal";
-import { User } from "../store/types";
+import { Group, User } from "../store/types";
 import { createUser } from "../http/user.http";
 import { useGeneralStore } from "../store/general.store";
 import { getUserGroups } from "../http/group.http";
 import { Link, Route, Routes } from "react-router-dom";
 import ChatLayOut from "./ChatLayOut";
 import useSocketStatus from "../hooks/useConnectingStatus";
+const { Meta } = Card;
 
 export default function RootLayout() {
   const { user, setUser, userGroups, setUserGroups } = useGeneralStore();
@@ -153,6 +154,31 @@ export default function RootLayout() {
           <Routes>
             <Route path="groups/:groupId" element={<ChatLayOut />} />
           </Routes>
+          <div>
+            <h3>Groups</h3>
+            <div className="flex flex-wrap gap-4">
+              {userGroups?.map((group: Group) => (
+                <Card
+                  style={{ width: 300 }}
+                  cover={
+                    <img
+                      draggable={false}
+                      alt="example"
+                      src={group?.imageUrl}
+                    />
+                  }
+                >
+                  <Meta
+                    avatar={<Avatar src={group?.owner?.imageUrl} />}
+                    title={group.name}
+                    description={
+                      "Group Has " + group?.members?.length + " Members"
+                    }
+                  />
+                </Card>
+              ))}
+            </div>
+          </div>
         </Content>
       </Layout>
     </Layout>
