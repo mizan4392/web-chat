@@ -10,7 +10,7 @@ import { Group, User } from "../store/types";
 import { createUser } from "../http/user.http";
 import { useGeneralStore } from "../store/general.store";
 import { getUserGroups } from "../http/group.http";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import ChatLayOut from "./ChatLayOut";
 import useSocketStatus from "../hooks/useConnectingStatus";
 const { Meta } = Card;
@@ -21,6 +21,8 @@ export default function RootLayout() {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const { session } = useSession();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!session?.user) {
@@ -156,7 +158,7 @@ export default function RootLayout() {
           </Routes>
           <div>
             <h3>Groups</h3>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mt-4">
               {userGroups?.map((group: Group) => (
                 <Card
                   style={{ width: 300 }}
@@ -167,6 +169,11 @@ export default function RootLayout() {
                       src={group?.imageUrl}
                     />
                   }
+                  className="cursor-pointer"
+                  onClick={() => {
+                    // Handle group click
+                    navigate(`/groups/${group.id}`);
+                  }}
                 >
                   <Meta
                     avatar={<Avatar src={group?.owner?.imageUrl} />}

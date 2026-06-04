@@ -50,6 +50,7 @@ export class GroupService {
         where: {
           owner: userExist,
         },
+        relations: ['members', 'owner'],
       })) || [];
 
     const joinedGroups = await this.groupMembersService.getGroupsByUser(
