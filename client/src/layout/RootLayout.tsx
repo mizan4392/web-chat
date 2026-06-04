@@ -155,37 +155,42 @@ export default function RootLayout() {
         >
           <Routes>
             <Route path="groups/:groupId" element={<ChatLayOut />} />
+            <Route
+              path="/"
+              element={
+                <div>
+                  <h3>Groups</h3>
+                  <div className="flex flex-wrap gap-4 mt-4">
+                    {userGroups?.map((group: Group) => (
+                      <Card
+                        style={{ width: 300 }}
+                        cover={
+                          <img
+                            draggable={false}
+                            alt="example"
+                            src={group?.imageUrl}
+                          />
+                        }
+                        className="cursor-pointer"
+                        onClick={() => {
+                          // Handle group click
+                          navigate(`/groups/${group.id}`);
+                        }}
+                      >
+                        <Meta
+                          avatar={<Avatar src={group?.owner?.imageUrl} />}
+                          title={group.name}
+                          description={
+                            "Group Has " + group?.members?.length + " Members"
+                          }
+                        />
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              }
+            />
           </Routes>
-          <div>
-            <h3>Groups</h3>
-            <div className="flex flex-wrap gap-4 mt-4">
-              {userGroups?.map((group: Group) => (
-                <Card
-                  style={{ width: 300 }}
-                  cover={
-                    <img
-                      draggable={false}
-                      alt="example"
-                      src={group?.imageUrl}
-                    />
-                  }
-                  className="cursor-pointer"
-                  onClick={() => {
-                    // Handle group click
-                    navigate(`/groups/${group.id}`);
-                  }}
-                >
-                  <Meta
-                    avatar={<Avatar src={group?.owner?.imageUrl} />}
-                    title={group.name}
-                    description={
-                      "Group Has " + group?.members?.length + " Members"
-                    }
-                  />
-                </Card>
-              ))}
-            </div>
-          </div>
         </Content>
       </Layout>
     </Layout>
