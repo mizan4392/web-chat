@@ -35,6 +35,7 @@ export class WebSocketGuard implements CanActivate {
         imageUrl: payload.imageUrl,
       };
     } catch (e) {
+      console.log('WebSocketGuard error:', e);
       client.emit('auth_error', {
         message: 'jwt expired',
       });
