@@ -33,8 +33,6 @@ services:
     networks:
       - app_network
 
-volumes:
-  postgres-data:
 
 networks:
   app_network:
