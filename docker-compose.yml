@@ -12,6 +12,9 @@ services:
     environment:
       NODE_ENV: production
 
+    networks:
+      - shared-network
+
 
   frontend:
     build: ./client
@@ -31,3 +34,6 @@ services:
 
 
 
+networks:
+  shared-network:
+    external: true
